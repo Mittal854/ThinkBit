@@ -1,8 +1,13 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  Navigate,
+  useLocation,
+} from "react-router-dom";
 import { useEffect, useState } from "react";
 import LandingPage from "./pages/LandingPage";
-// import ExamPage from "./pages/ExamPage";
-// import ResultsPage from "./pages/ResultsPage";
 import Navbar from "./components/Navbar";
 import AuthPage from "./pages/AuthPage";
 import DashboardLayout from "./pages/DashboardLayout";
@@ -26,72 +31,84 @@ import ReportsFeedback from "./pages/dashboards/admin/ReportsFeedback";
 import Exams from "./pages/Exams";
 import Profile from "./pages/Profile";
 import ExamPage from "./pages/ExamPage";
-
-
 // import ThemeToggle from "./components/ThemeToggle";
 // import Footer from "./components/Footer";
 
-function App() {
+import { useLocation as useReactRouterLocation } from "react-router-dom";
+
+function AppWrapper() {
+  const location = useReactRouterLocation();
   const [userRole, setUserRole] = useState(localStorage.getItem("role") || "");
+
   useEffect(() => {
     setUserRole(localStorage.getItem("role") || "");
   }, []);
-   const getDashboard = () => {
-     switch (userRole) {
-       case "student":
-         return <Navigate to="/dashboard/student/myexams" />;
-       case "examiner":
-         return <Navigate to="/dashboard/examiner/createexam" />;
-       case "admin":
-         return <Navigate to="/dashboard/admin/usermanagement" />;
-       default:
-         return <Navigate to="/auth" />;
-     }
-   };
+
+  const getDashboard = () => {
+    switch (userRole) {
+      case "student":
+        return <Navigate to="/dashboard/student/myexams" />;
+      case "examiner":
+        return <Navigate to="/dashboard/examiner/createexam" />;
+      case "admin":
+        return <Navigate to="/dashboard/admin/usermanagement" />;
+      default:
+        return <Navigate to="/auth" />;
+    }
+  };
+
+  // ✅ Hide Navbar when on /exam/:attemptId
+  const isExamAttemptPage = /^\/exam\/[^/]+$/.test(location.pathname);
 
   return (
     <div className="dark bg-gray-900 text-white">
-      <Router>
-        <Navbar />
-        {/* <ThemeToggle darkMode={darkMode} setDarkMode={setDarkMode} /> */}
-        <main className="min-h-screen">
-          <Routes>
-            <Route path="/" element={<LandingPage />} />
-            <Route path="/home" element={<LandingPage />} />
-            <Route path="/auth" element={<AuthPage />} />
-            <Route path="/exam" element={<Exams />} />
-            <Route path="/profile" element={<Profile />} />
-            <Route path="/exam/:attemptId" element={<ExamPage />} />
-            <Route path="/dashboard" element={getDashboard()} />
+      {!isExamAttemptPage && <Navbar />}
+      {/* <ThemeToggle /> */}
+      <main className="min-h-screen">
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/home" element={<LandingPage />} />
+          <Route path="/auth" element={<AuthPage />} />
+          <Route path="/exam" element={<Exams />} />
+          <Route path="/profile" element={<Profile />} />
+          <Route path="/exam/:attemptId" element={<ExamPage />} />
+          <Route path="/dashboard" element={getDashboard()} />
 
-            {/* Dashboard Layout with Sidebar */}
-            <Route path="/dashboard" element={<DashboardLayout />}>
-              <Route path="student" element={<StudentDashBoardLayout />}>
-                <Route path="myexams" element={<MyExams />} />
-                <Route path="progress" element={<Progress />} />
-                <Route path="examhistory" element={<ExamHistory />} />
-              </Route>
-              <Route path="examiner" element={<ExaminerDashBoardLayout />}>
-                <Route path="createexam" element={<CreateExam />} />
-                <Route path="evaluateanswers" element={<EvaluateAnswers />} />
-                <Route path="examanalytics" element={<ExamAnalytics />} />
-                <Route path="managequestions" element={<ManageQuestions />} />
-              </Route>
-              <Route path="admin" element={<AdminDashBoardLayout />}>
-                <Route path="systemanalytics" element={<SystemAnalytics />} />
-                <Route path="usermanagement" element={<UserManagement />} />
-                <Route path="userlogs" element={<UserLogs />} />
-                <Route path="settings" element={<AdminSettings />} />
-                <Route path="exammonitoring" element={<ExamMonitoring />} />
-                <Route path="notifications" element={<Notifications />} />
-                <Route path="reports" element={<ReportsFeedback />} />
-              </Route>
+          {/* Dashboard Layout with Sidebar */}
+          <Route path="/dashboard" element={<DashboardLayout />}>
+            <Route path="student" element={<StudentDashBoardLayout />}>
+              <Route path="myexams" element={<MyExams />} />
+              <Route path="progress" element={<Progress />} />
+              <Route path="examhistory" element={<ExamHistory />} />
             </Route>
-          </Routes>
-        </main>
-        {/* <Footer /> */}
-      </Router>
+            <Route path="examiner" element={<ExaminerDashBoardLayout />}>
+              <Route path="createexam" element={<CreateExam />} />
+              <Route path="evaluateanswers" element={<EvaluateAnswers />} />
+              <Route path="examanalytics" element={<ExamAnalytics />} />
+              <Route path="managequestions" element={<ManageQuestions />} />
+            </Route>
+            <Route path="admin" element={<AdminDashBoardLayout />}>
+              <Route path="systemanalytics" element={<SystemAnalytics />} />
+              <Route path="usermanagement" element={<UserManagement />} />
+              <Route path="userlogs" element={<UserLogs />} />
+              <Route path="settings" element={<AdminSettings />} />
+              <Route path="exammonitoring" element={<ExamMonitoring />} />
+              <Route path="notifications" element={<Notifications />} />
+              <Route path="reports" element={<ReportsFeedback />} />
+            </Route>
+          </Route>
+        </Routes>
+      </main>
+      {/* <Footer /> */}
     </div>
+  );
+}
+
+function App() {
+  return (
+    <Router>
+      <AppWrapper />
+    </Router>
   );
 }
 

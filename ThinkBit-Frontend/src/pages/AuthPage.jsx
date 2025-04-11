@@ -38,7 +38,7 @@ const AuthPage = () => {
 
       localStorage.setItem("token", token);
       localStorage.setItem("role", user.role);
-      localStorage.setItem("userId", user._id);
+      localStorage.setItem("userId", user.id);
 
       toast.success(`Welcome back, ${user.role}! Redirecting...`, {
         position: "top-center",
@@ -55,7 +55,10 @@ const AuthPage = () => {
           toast.error("Invalid role assigned. Please contact support.");
         }
       }, 1500);
-    } catch (error) {
+      setTimeout(()=>{
+        window.location.reload();
+      },1510);
+    } catch (error) { 
       toast.error("Invalid credentials. Please try again.", {
         position: "top-center",
       });

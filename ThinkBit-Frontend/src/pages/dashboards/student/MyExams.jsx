@@ -616,12 +616,211 @@
 
 // export default MyExams;
 
+// import React, { useEffect, useState } from "react";
+// import { Link, useNavigate } from "react-router-dom";
+// import { FaCalendarAlt, FaClock, FaChartBar, FaRedo } from "react-icons/fa";
+
+// const MyExams = () => {
+//   const [exams, setExams] = useState([]); // ✅ Always an array
+//   const [loading, setLoading] = useState(true);
+//   const [error, setError] = useState(null);
+//   const navigate = useNavigate();
+
+//   useEffect(() => {
+//     const fetchExams = async () => {
+//       try {
+//         const token = localStorage.getItem("token");
+//         if (!token) {
+//           setError("User not authenticated. Please log in.");
+//           setLoading(false);
+//           return;
+//         }
+
+//         const response = await fetch(
+//           "http://localhost:5000/api/exam/my-exams",
+//           {
+//             headers: { Authorization: `Bearer ${token}` },
+//           }
+//         );
+
+//         if (!response.ok) {
+//           throw new Error(`HTTP Error! Status: ${response.status}`);
+//         }
+
+//         const data = await response.json();
+//         console.log("API Response:", data); // 🚀 Debugging step
+
+//         setExams(Array.isArray(data.exams) ? data.exams : []);
+//       } catch (error) {
+//         setError("Failed to fetch exams. Please try again.");
+//         setExams([]);
+//       } finally {
+//         setLoading(false);
+//       }
+//     };
+
+
+//     fetchExams();
+//   }, []);
+
+//   // ✅ Function to start an exam
+//   const startExam = async (examId, startTime, endTime) => {
+//     const currentTime = new Date();
+//     if (currentTime < new Date(startTime)) {
+//       alert("Exam has not started yet!");
+//       return;
+//     }
+//     if (currentTime > new Date(endTime)) {
+//       alert("Exam has already ended!");
+//       return;
+//     }
+
+//     try {
+//       const token = localStorage.getItem("token");
+//       if (!token) {
+//         alert("User not authenticated. Please log in.");
+//         return;
+//       }
+
+//       const response = await fetch("http://localhost:5000/api/exam/start", {
+//         method: "POST",
+//         headers: {
+//           "Content-Type": "application/json",
+//           Authorization: `Bearer ${token}`,
+//         },
+//         body: JSON.stringify({ examId }),
+//       });
+
+//       const data = await response.json();
+//       if (!response.ok) {
+//         throw new Error(data.message || "Failed to start exam");
+//       }
+
+//       // Redirect user to exam-taking page
+//       navigate(`/exam/${data.attemptId}`);
+//     } catch (error) {
+//       console.error("Error starting exam:", error);
+//       alert(error.message);
+//     }
+//   };
+
+//   return (
+//     <div className="p-6 text-white">
+//       <h2 className="text-4xl font-extrabold mb-6 text-gradient">
+//         📚 My Exams
+//       </h2>
+
+//       {loading ? (
+//         <p className="text-center text-gray-400">Loading exams...</p>
+//       ) : error ? (
+//         <p className="text-center text-red-400">{error}</p>
+//       ) : exams.length === 0 ? (
+//         <p className="text-center text-gray-400">No exams available.</p>
+//       ) : (
+//         // <div className="grid md:grid-cols-2 lg:grid-cols-6 gap-6">
+//         <div className="flex flex-row gap-6">
+//           {exams.map((exam) => {
+//             const startTime = new Date(exam.startTime).getTime();
+//             const endTime = new Date(exam.endTime).getTime();
+//             const currentTime = new Date().getTime();
+//             console.log(`Current Time: ${new Date().toISOString()}`);
+//             console.log(
+//               `Exam Start: ${exam.startTime}, Parsed: ${new Date(startTime)}`
+//             );
+//             console.log(
+//               `Exam End: ${exam.endTime}, Parsed: ${new Date(endTime)}`
+//             );
+
+//             const isOngoing =
+//               currentTime >= startTime && currentTime <= endTime;
+//             console.log(`Is Ongoing: ${isOngoing}`);
+
+
+//             return (
+//               <div
+//                 key={exam.id}
+//                 className="relative bg-gray-900 p-6 rounded-xl shadow-lg border border-gray-700 hover:scale-105 transition-all group overflow-hidden">
+//                 <h3 className="relative text-xl font-semibold">{exam.name}</h3>
+//                 <p className="relative text-sm text-gray-400 flex items-center gap-2 mt-2">
+//                   <FaCalendarAlt className="text-blue-400" /> {exam.date}
+//                 </p>
+//                 <p className="relative mt-2 flex items-center gap-2">
+//                   <FaClock className="text-yellow-400" /> Duration:{" "}
+//                   {exam.duration}
+//                 </p>
+//                 <p className="relative flex items-center gap-2">
+//                   <FaChartBar className="text-green-400" /> Total Marks:{" "}
+//                   {exam.totalMarks}
+//                 </p>
+//                 <p className="relative font-semibold mt-2">
+//                   Attempts Left:{" "}
+//                   <span
+//                     className={
+//                       exam.attemptsLeft > 0 ? "text-green-400" : "text-red-400"
+//                     }>
+//                     {exam.attemptsLeft}
+//                   </span>
+//                 </p>
+
+//                 {/* Status Indicator */}
+//                 <div
+//                   className={`relative inline-block px-3 py-1 mt-3 text-sm font-semibold rounded-full ${
+//                     isOngoing
+//                       ? "bg-yellow-500 text-black"
+//                       : exam.status === "Completed"
+//                       ? "bg-green-500 text-white"
+//                       : "bg-blue-500 text-white"
+//                   }`}>
+//                   {isOngoing ? "Ongoing" : exam.status}
+//                 </div>
+
+//                 {/* Action Buttons */}
+//                 <div className="relative mt-6 flex justify-between">
+//                   {/* {isOngoing && exam.attemptsLeft > 0 && (
+//                     <button
+//                       className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg w-full font-semibold transition-all"
+//                       onClick={() =>
+//                         startExam(exam.id, exam.startTime, exam.endTime)
+//                       }>
+//                       Start Exam
+//                     </button>
+//                   )} */}
+//                   {isOngoing && (
+//                     <button
+//                       className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg w-full font-semibold transition-all"
+//                       onClick={() =>
+//                         startExam(exam.id, exam.startTime, exam.endTime)
+//                       }>
+//                       Start Exam
+//                     </button>
+//                   )}
+
+//                   {exam.status === "Completed" && (
+//                     <Link
+//                       to={`/results/${exam.id}`}
+//                       className="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-lg w-full font-semibold transition-all flex items-center justify-center gap-2">
+//                       <FaRedo /> View Results
+//                     </Link>
+//                   )}
+//                 </div>
+//               </div>
+//             );
+//           })}
+//         </div>
+//       )}
+//     </div>
+//   );
+// };
+
+// export default MyExams;
+
+
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaCalendarAlt, FaClock, FaChartBar, FaRedo } from "react-icons/fa";
 
 const MyExams = () => {
-  const [exams, setExams] = useState([]); // ✅ Always an array
+  const [exams, setExams] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const navigate = useNavigate();
@@ -636,20 +835,15 @@ const MyExams = () => {
           return;
         }
 
-        const response = await fetch(
-          "http://localhost:5000/api/exam/my-exams",
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
+        const response = await fetch("http://localhost:5000/api/exam/my-exams", {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
         if (!response.ok) {
           throw new Error(`HTTP Error! Status: ${response.status}`);
         }
 
         const data = await response.json();
-        console.log("API Response:", data); // 🚀 Debugging step
-
         setExams(Array.isArray(data.exams) ? data.exams : []);
       } catch (error) {
         setError("Failed to fetch exams. Please try again.");
@@ -659,11 +853,9 @@ const MyExams = () => {
       }
     };
 
-
     fetchExams();
   }, []);
 
-  // ✅ Function to start an exam
   const startExam = async (examId, startTime, endTime) => {
     const currentTime = new Date();
     if (currentTime < new Date(startTime)) {
@@ -696,7 +888,6 @@ const MyExams = () => {
         throw new Error(data.message || "Failed to start exam");
       }
 
-      // Redirect user to exam-taking page
       navigate(`/exam/${data.attemptId}`);
     } catch (error) {
       console.error("Error starting exam:", error);
@@ -704,11 +895,23 @@ const MyExams = () => {
     }
   };
 
+  const getExamStatus = (exam) => {
+    const currentTime = new Date().getTime();
+    const startTime = new Date(exam.startTime).getTime();
+    const endTime = new Date(exam.endTime).getTime();
+
+    if (currentTime > endTime) {
+      return exam.status === "Completed" ? "Completed" : "Ended";
+    }
+    if (currentTime >= startTime && currentTime <= endTime) {
+            return exam.status === "Completed" ? "Completed" : "Ongoing";
+    }
+    return "Upcoming";
+  };
+
   return (
     <div className="p-6 text-white">
-      <h2 className="text-4xl font-extrabold mb-6 text-gradient">
-        📚 My Exams
-      </h2>
+      <h2 className="text-4xl font-extrabold mb-6 text-gradient">📚 My Exams</h2>
 
       {loading ? (
         <p className="text-center text-gray-400">Loading exams...</p>
@@ -717,91 +920,57 @@ const MyExams = () => {
       ) : exams.length === 0 ? (
         <p className="text-center text-gray-400">No exams available.</p>
       ) : (
-        // <div className="grid md:grid-cols-2 lg:grid-cols-6 gap-6">
         <div className="flex flex-row gap-6">
           {exams.map((exam) => {
-            const startTime = new Date(exam.startTime).getTime();
-            const endTime = new Date(exam.endTime).getTime();
-            const currentTime = new Date().getTime();
-            console.log(`Current Time: ${new Date().toISOString()}`);
-            console.log(
-              `Exam Start: ${exam.startTime}, Parsed: ${new Date(startTime)}`
-            );
-            console.log(
-              `Exam End: ${exam.endTime}, Parsed: ${new Date(endTime)}`
-            );
-
-            const isOngoing =
-              currentTime >= startTime && currentTime <= endTime;
-            console.log(`Is Ongoing: ${isOngoing}`);
-
-
+            const status = getExamStatus(exam);
             return (
               <div
                 key={exam.id}
-                className="relative bg-gray-900 p-6 rounded-xl shadow-lg border border-gray-700 hover:scale-105 transition-all group overflow-hidden">
+                className="relative bg-gray-900 p-6 rounded-xl shadow-lg border border-gray-700 hover:scale-105 transition-all group overflow-hidden"
+              >
                 <h3 className="relative text-xl font-semibold">{exam.name}</h3>
                 <p className="relative text-sm text-gray-400 flex items-center gap-2 mt-2">
                   <FaCalendarAlt className="text-blue-400" /> {exam.date}
                 </p>
                 <p className="relative mt-2 flex items-center gap-2">
-                  <FaClock className="text-yellow-400" /> Duration:{" "}
-                  {exam.duration}
+                  <FaClock className="text-yellow-400" /> Duration: {exam.duration}
                 </p>
                 <p className="relative flex items-center gap-2">
-                  <FaChartBar className="text-green-400" /> Total Marks:{" "}
-                  {exam.totalMarks}
+                  <FaChartBar className="text-green-400" /> Total Marks: {exam.totalMarks}
                 </p>
                 <p className="relative font-semibold mt-2">
-                  Attempts Left:{" "}
-                  <span
-                    className={
-                      exam.attemptsLeft > 0 ? "text-green-400" : "text-red-400"
-                    }>
-                    {exam.attemptsLeft}
-                  </span>
+                  Attempts Left: <span className={exam.attemptsLeft > 0 ? "text-green-400" : "text-red-400"}>{exam.attemptsLeft}</span>
                 </p>
 
-                {/* Status Indicator */}
                 <div
                   className={`relative inline-block px-3 py-1 mt-3 text-sm font-semibold rounded-full ${
-                    isOngoing
-                      ? "bg-yellow-500 text-black"
-                      : exam.status === "Completed"
-                      ? "bg-green-500 text-white"
-                      : "bg-blue-500 text-white"
-                  }`}>
-                  {isOngoing ? "Ongoing" : exam.status}
+                    status === "Ongoing" ? "bg-yellow-500 text-black" :
+                    status === "Completed" ? "bg-green-500 text-white" :
+                    status === "Ended" ? "bg-red-500 text-white" :
+                    "bg-blue-500 text-white"
+                  }`}
+                >
+                  {status}
                 </div>
 
-                {/* Action Buttons */}
                 <div className="relative mt-6 flex justify-between">
-                  {/* {isOngoing && exam.attemptsLeft > 0 && (
+                  {status === "Ongoing" && (
                     <button
                       className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg w-full font-semibold transition-all"
-                      onClick={() =>
-                        startExam(exam.id, exam.startTime, exam.endTime)
-                      }>
-                      Start Exam
-                    </button>
-                  )} */}
-                  {isOngoing && (
-                    <button
-                      className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg w-full font-semibold transition-all"
-                      onClick={() =>
-                        startExam(exam.id, exam.startTime, exam.endTime)
-                      }>
+                      onClick={() => startExam(exam.id, exam.startTime, exam.endTime)}
+                    >
                       Start Exam
                     </button>
                   )}
 
-                  {exam.status === "Completed" && (
+                  {/* {status === "Completed" && (
                     <Link
                       to={`/results/${exam.id}`}
-                      className="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-lg w-full font-semibold transition-all flex items-center justify-center gap-2">
+                      className="bg-green-500 hover:bg-green-600 text-white px-5 py-2 rounded-lg w-full font-semibold transition-all flex items-center justify-center gap-2"
+                    >
                       <FaRedo /> View Results
                     </Link>
-                  )}
+                  )} */}
                 </div>
               </div>
             );
@@ -813,4 +982,3 @@ const MyExams = () => {
 };
 
 export default MyExams;
-

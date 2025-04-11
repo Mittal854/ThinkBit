@@ -1,23 +1,3 @@
-// const express = require("express");
-// const { verifyToken, authorizeRole } = require("../middleware/authMiddleware");
-// const {
-//   startExam,
-//   createExam,
-//   getAllExams,
-//   submitExam,
-//   getExamResult,
-// } = require("../controllers/examController");
-
-// const router = express.Router();
-
-// router.post("/start", verifyToken, authorizeRole(["student"]), startExam);
-// router.post("/create", verifyToken, authorizeRole(["examiner"]), createExam);
-// router.get("/all", verifyToken, authorizeRole(["admin"]), getAllExams);
-// router.post("/submit", verifyToken, submitExam);
-// router.get("/exam-result/:attemptId", verifyToken, getExamResult);
-
-// module.exports = router;
-
 
 const express = require("express");
 const { verifyToken, authorizeRole } = require("../middleware/authMiddleware");

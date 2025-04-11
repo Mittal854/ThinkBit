@@ -15,7 +15,13 @@ const ExamResultSchema = new mongoose.Schema({
   score: Number,
   totalMarks: Number,
   passed: Boolean,
-  createdAt: { type: Date, default: Date.now },
+  createdAt: {
+    type: Date,
+    default: () => {
+      const offsetMs = new Date().getTimezoneOffset() * 60000;
+      return new Date(Date.now() - offsetMs); // manually adjust to local timezone
+    },
+  },
 });
 
 module.exports = mongoose.model("ExamResult", ExamResultSchema);
