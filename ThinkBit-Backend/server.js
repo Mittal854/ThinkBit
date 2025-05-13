@@ -17,6 +17,7 @@ app.use("/api/auth", require("./src/routes/authRoutes"));
 app.use("/api/user", require("./src/routes/userRoutes"));
 app.use("/api/exam", require("./src/routes/examRoutes"));
 app.use("/api/exams", require("./src/routes/exam"));
+app.use("/api/evaluations", require("./src/routes/evaluationRoutes"));
 
 // Server Listening
 const PORT = process.env.PORT || 5000;

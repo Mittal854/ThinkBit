@@ -65,7 +65,6 @@ const startExam = async (req, res) => {
   }
 };
 
-
 const submitExam = async (req, res) => {
   try {
     const { attemptId, answers } = req.body;
@@ -168,6 +167,7 @@ const submitExam = async (req, res) => {
       createdAt: currentTime,
     });
     await result.save();
+    await updateExamAnalytics(exam._id, exam.createdBy);
 
     res.status(200).json({
       message: "Exam submitted successfully",
@@ -249,7 +249,6 @@ const createExam = async (req, res) => {
       .json({ message: "Error creating exam", error: error.message });
   }
 };
-
 
 // 🎯 Student: Get Exam Result
 const getExamResult = async (req, res) => {
@@ -355,7 +354,7 @@ const attempt = async (req, res) => {
       examId: attempt.examId._id,
       name: attempt.examId.title,
       duration: attempt.examId.timeAllotted,
-      totalScore:attempt.totalScore, // ✅ Sums up individual question marks
+      totalScore: attempt.totalScore, // ✅ Sums up individual question marks
 
       questions: attempt.examId.questions,
       startTime: attempt.startedAt, // ✅ Ensure this is sent
@@ -392,9 +391,38 @@ const getUserExamResults = async (req, res) => {
   }
 };
 
+// const getUserExamHistory = async (req, res) => {
+//   try {
+//     const userId = req.user.id;
+//     const attempts = await ExamAttempt.find({
+//       userId,
+//       status: "completed",
+//     }).populate("examId");
+
+//     if (!attempts.length) {
+//       return res.json({ message: "No completed exams yet.", results: [] });
+//     }
+
+//     const results = attempts.map((attempt) => ({
+//       id: attempt._id,
+//       name: attempt.examId.title,
+//       date: attempt.createdAt.toISOString().split("T")[0], // Format date
+//       score: attempt.score,
+//       grade: attempt.grade || "N/A",
+//       canReattempt: attempt.examId.canReattempt || false,
+//     }));
+
+//     res.json({ results });
+//   } catch (error) {
+//     console.error("Error fetching exam history:", error);
+//     res.status(500).json({ message: "Error fetching exam history" });
+//   }
+// };
+
 const getUserExamHistory = async (req, res) => {
   try {
     const userId = req.user.id;
+
     const attempts = await ExamAttempt.find({
       userId,
       status: "completed",
@@ -404,16 +432,49 @@ const getUserExamHistory = async (req, res) => {
       return res.json({ message: "No completed exams yet.", results: [] });
     }
 
-    const results = attempts.map((attempt) => ({
-      id: attempt._id,
-      name: attempt.examId.title,
-      date: attempt.createdAt.toISOString().split("T")[0], // Format date
-      score: attempt.score,
-      grade: attempt.grade || "N/A",
-      canReattempt: attempt.examId.canReattempt || false,
-    }));
+    // Only include attempts where all questions are reviewed
+    const reviewedAttempts = attempts.filter((attempt) =>
+      attempt.answers.every((ans) => ans.reviewStatus === "reviewed")
+    );
 
-    res.json({ results });
+    // Fetch related results from ExamResult model
+    const results = await Promise.all(
+      reviewedAttempts.map(async (attempt) => {
+        const examResult = await ExamResult.findOne({
+          studentId: userId,
+          examId: attempt.examId._id,
+        });
+
+        if (!examResult) return null;
+
+        const percentage = (
+          (examResult.score / examResult.totalMarks) *
+          100
+        ).toFixed(2);
+
+        let grade = "F";
+        const percent = parseFloat(percentage);
+        if (percent >= 80) grade = "O";
+        else if (percent >= 70) grade = "A+";
+        else if (percent >= 60) grade = "A";
+        else if (percent >= 55) grade = "B+";
+        else if (percent >= 50) grade = "B";
+        else if (percent >= 45) grade = "C";
+        else if (percent >= 40) grade = "P";
+
+        return {
+          id: attempt._id,
+          name: attempt.examId.title,
+          date: attempt.createdAt.toISOString().split("T")[0],
+          score: percentage,
+          grade,
+          canReattempt: attempt.examId.canReattempt || false,
+        };
+      })
+    );
+
+    // Filter out nulls in case any ExamResult is missing
+    res.json({ results: results.filter((r) => r !== null) });
   } catch (error) {
     console.error("Error fetching exam history:", error);
     res.status(500).json({ message: "Error fetching exam history" });
@@ -434,7 +495,7 @@ const getExamAnalytics = async (req, res) => {
     // Calculate updated analytics
     const updatedExams = exams.map((exam) => {
       const examResults = results.filter(
-        (r) => r.examId.toString() === exam._id.toString()
+        (r) => r.examId.toString() === exam.examId.toString()
       );
       const totalAttempts = examResults.length;
       const avgScore = totalAttempts
@@ -446,8 +507,8 @@ const getExamAnalytics = async (req, res) => {
 
       return {
         ...exam._doc,
-        avgScore: avgScore.toFixed(1),
-        passRate: passRate.toFixed(1),
+        avgScore: Number(avgScore.toFixed(1)),
+        passRate: Number(passRate.toFixed(1)),
         totalAttempts,
       };
     });
@@ -512,6 +573,64 @@ const enroll = async (req, res) => {
   }
 };
 
+const updateExamAnalytics = async (examId, examinerId) => {
+  try {
+    // Get the exam details
+    const exam = await Exam.findById(examId);
+    if (!exam) return;
+
+    // Find all results for this exam
+    const examResults = await ExamResult.find({ examId });
+    const totalAttempts = examResults.length;
+
+    if (totalAttempts === 0) return;
+
+    // Calculate analytics
+    const totalMarks = exam.questions.reduce((sum, q) => sum + q.marks, 0);
+    const avgRawScore =
+      examResults.reduce((sum, r) => sum + r.score, 0) / totalAttempts;
+    const avgScore = (avgRawScore / totalMarks) * 100;
+
+    const passRate =
+      (examResults.filter((r) => r.passed).length / totalAttempts) * 100;
+
+    // Update or create ExamAnalytics record
+    await ExamAnalytics.findOneAndUpdate(
+      { examinerId, examId }, // ✅ Fixed here
+      {
+        examinerId,
+        examId,
+        name: exam.title,
+        avgScore: avgScore.toFixed(1),
+        passRate: passRate.toFixed(1),
+        totalAttempts,
+      },
+      { upsert: true, new: true }
+    );
+
+    // Update top performers
+    const topScorers = await ExamResult.find({ examId })
+      .sort({ score: -1 })
+      .limit(5)
+      .populate("studentId", "name");
+
+    // Clear existing top performers for this exam
+    await TopPerformer.deleteMany({ examId, examinerId });
+
+    // Create new top performers
+    for (const result of topScorers) {
+      await TopPerformer.create({
+        examinerId,
+        name: result.studentId.name,
+        score: result.score,
+        examId,
+      });
+    }
+  } catch (error) {
+    console.error("Error updating exam analytics:", error);
+  }
+};
+
 module.exports = {
   startExam,
   createExam,
@@ -523,5 +642,6 @@ module.exports = {
   getExamAnalytics,
   allexams,
   enroll,
-  attempt
+  attempt,
+  updateExamAnalytics,
 };

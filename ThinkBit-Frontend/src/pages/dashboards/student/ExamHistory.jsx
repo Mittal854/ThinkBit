@@ -1,14 +1,13 @@
 
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { FaRedo, FaEye, FaCheckCircle, FaTimesCircle } from "react-icons/fa";
+import { FaEye } from "react-icons/fa";
 
 const ExamHistory = () => {
   const [examHistory, setExamHistory] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // Fetch exam history from API
   useEffect(() => {
     const fetchExamHistory = async () => {
       try {
@@ -32,9 +31,10 @@ const ExamHistory = () => {
     fetchExamHistory();
   }, []);
 
-  // Function to get grade color
   const getGradeColor = (grade) => {
     switch (grade) {
+      case "O":
+        return "text-emerald-400";
       case "A+":
       case "A":
         return "text-green-400";
@@ -43,12 +43,13 @@ const ExamHistory = () => {
         return "text-blue-400";
       case "C":
         return "text-yellow-400";
+      case "P":
+        return "text-gray-400";
       default:
         return "text-red-400";
     }
   };
 
-  // Loading State
   if (loading) {
     return (
       <div className="p-6 text-white text-center">
@@ -58,7 +59,6 @@ const ExamHistory = () => {
     );
   }
 
-  // Error State
   if (error) {
     return (
       <div className="p-6 text-white text-center">
@@ -82,7 +82,6 @@ const ExamHistory = () => {
               <th className="p-4 border">Date</th>
               <th className="p-4 border">Score</th>
               <th className="p-4 border">Grade</th>
-              <th className="p-4 border text-center">Reattempt</th>
               <th className="p-4 border text-center">Actions</th>
             </tr>
           </thead>
@@ -94,35 +93,25 @@ const ExamHistory = () => {
                   className="border-b border-gray-600 hover:bg-gray-700 transition-all">
                   <td className="p-4 border">{exam.name}</td>
                   <td className="p-4 border">{exam.date}</td>
-                  <td className="p-4 border font-semibold">{exam.score}%</td>
-                  <td
-                    className={`p-4 border font-semibold ${getGradeColor(
-                      exam.grade
-                    )}`}>
-                    {exam.grade}
+                  <td className="p-4 border font-semibold text-white">
+                    {exam.score}%
                   </td>
+                  <td className="p-4 border font-semibold">
+                    <span className={getGradeColor(exam.grade)}>
+                      {exam.grade}
+                    </span>
+                  </td>
+
                   <td className="p-4 border text-center">
-                    {exam.canReattempt ? (
-                      <FaCheckCircle className="text-green-400 text-lg mx-auto" />
-                    ) : (
-                      <FaTimesCircle className="text-red-400 text-lg mx-auto" />
-                    )}
-                  </td>
-                  <td className="p-4 border flex justify-center gap-3">
                     <button className="bg-blue-600 flex items-center gap-2 px-4 py-2 rounded-md hover:bg-blue-500 transition-all">
-                      <FaEye /> View Results
+                      <FaEye /> View Certificate
                     </button>
-                    {exam.canReattempt && (
-                      <button className="bg-green-600 flex items-center gap-2 px-4 py-2 rounded-md hover:bg-green-500 transition-all">
-                        <FaRedo /> Reattempt
-                      </button>
-                    )}
                   </td>
                 </tr>
               ))
             ) : (
               <tr>
-                <td colSpan="6" className="p-4 text-center text-gray-400">
+                <td colSpan="5" className="p-4 text-center text-gray-400">
                   No exam history available.
                 </td>
               </tr>

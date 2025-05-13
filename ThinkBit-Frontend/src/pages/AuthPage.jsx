@@ -39,8 +39,9 @@ const AuthPage = () => {
       localStorage.setItem("token", token);
       localStorage.setItem("role", user.role);
       localStorage.setItem("userId", user.id);
+      localStorage.setItem("username", user.name);
 
-      toast.success(`Welcome back, ${user.role}! Redirecting...`, {
+      toast.success(`Welcome back, ${user.name}! Redirecting...`, {
         position: "top-center",
       });
 
