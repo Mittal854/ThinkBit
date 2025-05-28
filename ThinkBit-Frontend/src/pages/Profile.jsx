@@ -34,7 +34,7 @@ const Profile = () => {
           });
         } else {
           const response = await fetch(
-            "https://thibkbit-backend.vercel.app//api/user/profile",
+            "https://thibkbit-backend.vercel.app/api/user/profile",
             {
               method: "GET",
               headers: {

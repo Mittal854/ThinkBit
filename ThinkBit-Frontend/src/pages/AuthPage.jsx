@@ -25,7 +25,7 @@ const AuthPage = () => {
   const handleLogin = async () => {
     try {
       const response = await axios.post(
-        "https://thibkbit-backend.vercel.app//api/auth/login",
+        "https://thibkbit-backend.vercel.app/api/auth/login",
         {
           email: formData.email,
           password: formData.password,

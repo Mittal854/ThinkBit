@@ -14,7 +14,7 @@ const UserManagement = () => {
     const fetchUsers = async () => {
       try {
         const res = await axios.get(
-          "https://thibkbit-backend.vercel.app//api/user"
+          "https://thibkbit-backend.vercel.app/api/user"
         );
         setUsers(res.data);
       } catch (error) {
@@ -30,7 +30,7 @@ const UserManagement = () => {
       onConfirm: async () => {
         try {
           await axios.delete(
-            `https://thibkbit-backend.vercel.app//api/user/${id}`
+            `https://thibkbit-backend.vercel.app/api/user/${id}`
           );
           setUsers(users.filter((user) => user._id !== id));
           setConfirmAction(null);
@@ -47,7 +47,7 @@ const UserManagement = () => {
       onConfirm: async () => {
         try {
           const res = await axios.patch(
-            `https://thibkbit-backend.vercel.app//api/user/${id}/toggle-role`
+            `https://thibkbit-backend.vercel.app/api/user/${id}/toggle-role`
           );
           setUsers(users.map((user) => (user._id === id ? res.data : user)));
           setConfirmAction(null);
@@ -64,7 +64,7 @@ const UserManagement = () => {
       onConfirm: async () => {
         try {
           const res = await axios.put(
-            `https://thibkbit-backend.vercel.app//api/user/${editUser._id}`,
+            `https://thibkbit-backend.vercel.app/api/user/${editUser._id}`,
             editUser
           );
           setUsers(

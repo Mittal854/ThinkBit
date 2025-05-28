@@ -22,7 +22,7 @@ const Progress = () => {
     const fetchExamData = async () => {
       try {
         const response = await axios.get(
-          "https://thibkbit-backend.vercel.app//api/exam/my-history",
+          "https://thibkbit-backend.vercel.app/api/exam/my-history",
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
