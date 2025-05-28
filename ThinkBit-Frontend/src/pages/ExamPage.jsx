@@ -445,7 +445,7 @@ const ExamPage = () => {
       try {
         const token = localStorage.getItem("token");
         const res = await fetch(
-          `https://thinkbit-backend.onrender.comapi/exam/attempt/${attemptId}`,
+          `https://thinkbit.onrender.comapi/exam/attempt/${attemptId}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         if (!res.ok) {
@@ -599,17 +599,14 @@ const ExamPage = () => {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch(
-        "https://thinkbit-backend.onrender.comapi/exam/submit",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify({ attemptId, answers: selectedAnswers }),
-        }
-      );
+      const res = await fetch("https://thinkbit.onrender.comapi/exam/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify({ attemptId, answers: selectedAnswers }),
+      });
       if (!res.ok) {
         const errorData = await res.json();
         throw new Error(errorData.message || "Failed to submit.");

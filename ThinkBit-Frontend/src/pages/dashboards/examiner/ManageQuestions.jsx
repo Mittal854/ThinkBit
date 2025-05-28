@@ -17,7 +17,7 @@ const ManageQuestions = () => {
     marks: 1,
   });
 
-  const API_URL = "https://thinkbit-backend.onrender.com";
+  const API_URL = "https://thinkbit.onrender.com";
 
   useEffect(() => {
     const token = localStorage.getItem("token");
