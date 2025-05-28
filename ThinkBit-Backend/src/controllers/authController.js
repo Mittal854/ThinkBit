@@ -72,13 +72,22 @@ exports.loginUser = async (req, res) => {
     const user = await User.findOne({ email: trimmedEmail });
     console.log("User Found in DB:", user ? "User Exists" : "User Not Found");
     if (!user) return res.status(400).json({ message: "Invalid credentials" });
+    if (user.status === "Inactive") {
+      return res.status(400).json({
+        message:
+          "Your account is currently inactive. Please contact the administrator for assistance.",
+      });
+    }
     console.log("Stored Hashed Password:", user.password);
     const isMatch = await bcrypt.compare(password, user.password);
     console.log("Password Match Result:", isMatch);
+   
     if (!isMatch) {
       console.log("Invalid Credentials - Password Mismatch");
       return res.status(400).json({ message: "Invalid credentials" });
     }
+    
+    
     console.log("User Login Successful");
     const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, );
     res.json({

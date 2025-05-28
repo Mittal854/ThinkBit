@@ -26,12 +26,12 @@ const Sidebar = () => {
     ],
     admin: [
       { name: "👤 User Management", path: "/dashboard/admin/usermanagement" },
-      { name: "📊 System Analytics", path: "/dashboard/admin/systemanalytics" },
-      { name: "📡 Exam Monitoring", path: "/dashboard/admin/exammonitoring" },
-      { name: "📜 User Logs & Activity", path: "/dashboard/admin/userlogs" },
-      { name: "🚨 Reports & Feedback", path: "/dashboard/admin/reports" },
-      { name: "⚙️ System Settings", path: "/dashboard/admin/settings" },
-      { name: "🔔 Notifications", path: "/dashboard/admin/notifications" },
+      // { name: "📊 System Analytics", path: "/dashboard/admin/systemanalytics" },
+      // { name: "📡 Exam Monitoring", path: "/dashboard/admin/exammonitoring" },
+      // { name: "📜 User Logs & Activity", path: "/dashboard/admin/userlogs" },
+      // { name: "🚨 Reports & Feedback", path: "/dashboard/admin/reports" },
+      // { name: "⚙️ System Settings", path: "/dashboard/admin/settings" },
+      // { name: "🔔 Notifications", path: "/dashboard/admin/notifications" },
     ],
   };
 

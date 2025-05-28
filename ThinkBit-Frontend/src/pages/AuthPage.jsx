@@ -60,7 +60,10 @@ const AuthPage = () => {
         window.location.reload();
       },1510);
     } catch (error) { 
-      toast.error("Invalid credentials. Please try again.", {
+      const errorMessage =
+        error.response?.data?.message || "Login failed. Please try again.";
+
+      toast.error(errorMessage, {
         position: "top-center",
       });
     }

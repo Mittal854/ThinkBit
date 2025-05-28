@@ -88,13 +88,13 @@ function AppWrapper() {
               <Route path="managequestions" element={<ManageQuestions />} />
             </Route>
             <Route path="admin" element={<AdminDashBoardLayout />}>
-              <Route path="systemanalytics" element={<SystemAnalytics />} />
+              {/* <Route path="systemanalytics" element={<SystemAnalytics />} /> */}
               <Route path="usermanagement" element={<UserManagement />} />
-              <Route path="userlogs" element={<UserLogs />} />
-              <Route path="settings" element={<AdminSettings />} />
-              <Route path="exammonitoring" element={<ExamMonitoring />} />
-              <Route path="notifications" element={<Notifications />} />
-              <Route path="reports" element={<ReportsFeedback />} />
+              {/* <Route path="userlogs" element={<UserLogs />} /> */}
+              {/* <Route path="settings" element={<AdminSettings />} /> */}
+              {/* <Route path="exammonitoring" element={<ExamMonitoring />} /> */}
+              {/* <Route path="notifications" element={<Notifications />} /> */}
+              {/* <Route path="reports" element={<ReportsFeedback />} /> */}
             </Route>
           </Route>
         </Routes>

@@ -1,58 +1,79 @@
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 import { FaEdit, FaTrash, FaUserShield, FaSearch } from "react-icons/fa";
 
 const UserManagement = () => {
-  const [users, setUsers] = useState([
-    {
-      id: 1,
-      name: "Alice Johnson",
-      email: "alice@example.com",
-      role: "student",
-      status: "Active",
-    },
-    {
-      id: 2,
-      name: "Bob Smith",
-      email: "bob@example.com",
-      role: "examiner",
-      status: "Active",
-    },
-    {
-      id: 3,
-      name: "Charlie Brown",
-      email: "charlie@example.com",
-      role: "student",
-      status: "Inactive",
-    },
-  ]);
-
+  const [users, setUsers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [filterRole, setFilterRole] = useState("");
   const [filterStatus, setFilterStatus] = useState("");
   const [editUser, setEditUser] = useState(null);
+  const [confirmAction, setConfirmAction] = useState(null);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const res = await axios.get("http://localhost:5000/api/user");
+        setUsers(res.data);
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+    fetchUsers();
+  }, []);
 
   const handleDelete = (id) => {
-    setUsers(users.filter((user) => user.id !== id));
+    setConfirmAction({
+      message: "Are you sure you want to delete this user?",
+      onConfirm: async () => {
+        try {
+          await axios.delete(`http://localhost:5000/api/user/${id}`);
+          setUsers(users.filter((user) => user._id !== id));
+          setConfirmAction(null);
+        } catch (error) {
+          console.error("Error deleting user:", error);
+        }
+      },
+    });
   };
 
   const toggleRole = (id) => {
-    setUsers(
-      users.map((user) =>
-        user.id === id
-          ? { ...user, role: user.role === "student" ? "examiner" : "student" }
-          : user
-      )
-    );
-  };
-
-  const openEditModal = (user) => {
-    setEditUser(user);
+    setConfirmAction({
+      message: "Are you sure you want to change this user's role?",
+      onConfirm: async () => {
+        try {
+          const res = await axios.patch(
+            `http://localhost:5000/api/user/${id}/toggle-role`
+          );
+          setUsers(users.map((user) => (user._id === id ? res.data : user)));
+          setConfirmAction(null);
+        } catch (error) {
+          console.error("Error toggling role:", error);
+        }
+      },
+    });
   };
 
   const handleUpdateUser = () => {
-    setUsers(users.map((user) => (user.id === editUser.id ? editUser : user)));
-    setEditUser(null);
+    setConfirmAction({
+      message: "Apply these changes to the user?",
+      onConfirm: async () => {
+        try {
+          const res = await axios.put(
+            `http://localhost:5000/api/user/${editUser._id}`,
+            editUser
+          );
+          setUsers(
+            users.map((user) => (user._id === editUser._id ? res.data : user))
+          );
+          setEditUser(null);
+          setConfirmAction(null);
+        } catch (error) {
+          console.error("Error updating user:", error);
+        }
+      },
+    });
   };
 
   const filteredUsers = users.filter((user) => {
@@ -112,7 +133,7 @@ const UserManagement = () => {
         <tbody>
           {filteredUsers.map((user) => (
             <tr
-              key={user.id}
+              key={user._id}
               className="bg-gray-800 hover:bg-gray-700 transition-all">
               <td className="p-3">{user.name}</td>
               <td className="p-3">{user.email}</td>
@@ -125,17 +146,17 @@ const UserManagement = () => {
               <td className="p-3 flex gap-3">
                 <button
                   className="text-yellow-400 hover:text-yellow-500"
-                  onClick={() => openEditModal(user)}>
+                  onClick={() => setEditUser(user)}>
                   <FaEdit />
                 </button>
                 <button
                   className="text-red-500 hover:text-red-600"
-                  onClick={() => handleDelete(user.id)}>
+                  onClick={() => handleDelete(user._id)}>
                   <FaTrash />
                 </button>
                 <button
-                  className="text-blue-500 hover:text-blue-600"
-                  onClick={() => toggleRole(user.id)}>
+                  className="text-purple-400 hover:text-purple-500"
+                  onClick={() => toggleRole(user._id)}>
                   <FaUserShield />
                 </button>
               </td>
@@ -144,15 +165,15 @@ const UserManagement = () => {
         </tbody>
       </table>
 
+      {/* Edit Modal */}
       {editUser && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50">
-          <div className="bg-gray-900 p-6 rounded-lg shadow-2xl w-96 transition-transform transform scale-105">
-            <h3 className="text-2xl font-semibold mb-4 text-gray-300">
-              Edit User
-            </h3>
+        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
+          <div className="bg-gray-900 p-8 rounded-lg shadow-lg w-[90%] max-w-md text-white">
+            <h3 className="text-2xl font-bold mb-4 text-blue-400">Edit User</h3>
             <input
               type="text"
-              className="w-full p-2 rounded-lg bg-gray-800 border border-gray-600 text-white mb-3 focus:ring-2 focus:ring-blue-500"
+              className="w-full p-3 mb-4 rounded bg-gray-800 border border-gray-600"
+              placeholder="Name"
               value={editUser.name}
               onChange={(e) =>
                 setEditUser({ ...editUser, name: e.target.value })
@@ -160,14 +181,24 @@ const UserManagement = () => {
             />
             <input
               type="email"
-              className="w-full p-2 rounded-lg bg-gray-800 border border-gray-600 text-white mb-3 focus:ring-2 focus:ring-blue-500"
+              className="w-full p-3 mb-4 rounded bg-gray-800 border border-gray-600"
+              placeholder="Email"
               value={editUser.email}
               onChange={(e) =>
                 setEditUser({ ...editUser, email: e.target.value })
               }
             />
             <select
-              className="w-full p-2 rounded-lg bg-gray-800 border border-gray-600 text-white mb-3 focus:ring-2 focus:ring-blue-500"
+              className="w-full p-3 mb-4 rounded bg-gray-800 border border-gray-600"
+              value={editUser.role}
+              onChange={(e) =>
+                setEditUser({ ...editUser, role: e.target.value })
+              }>
+              <option value="student">Student</option>
+              <option value="examiner">Examiner</option>
+            </select>
+            <select
+              className="w-full p-3 mb-6 rounded bg-gray-800 border border-gray-600"
               value={editUser.status}
               onChange={(e) =>
                 setEditUser({ ...editUser, status: e.target.value })
@@ -175,16 +206,40 @@ const UserManagement = () => {
               <option value="Active">Active</option>
               <option value="Inactive">Inactive</option>
             </select>
-            <div className="flex justify-end gap-2">
+            <div className="flex justify-end gap-4">
               <button
-                className="bg-red-500 px-4 py-2 rounded-lg text-white hover:bg-red-600"
+                className="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded"
+                onClick={handleUpdateUser}>
+                Update
+              </button>
+              <button
+                className="bg-gray-700 hover:bg-gray-800 px-4 py-2 rounded"
                 onClick={() => setEditUser(null)}>
                 Cancel
               </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Confirm Modal */}
+      {confirmAction && (
+        <div className="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center z-50">
+          <div className="bg-gray-900 p-6 rounded-lg shadow-lg w-[90%] max-w-sm text-white">
+            <h3 className="text-xl font-bold mb-4 text-red-400">
+              Confirm Action
+            </h3>
+            <p className="mb-6">{confirmAction.message}</p>
+            <div className="flex justify-end gap-4">
               <button
-                className="bg-green-500 px-4 py-2 rounded-lg text-white hover:bg-green-600"
-                onClick={handleUpdateUser}>
-                Save
+                onClick={confirmAction.onConfirm}
+                className="bg-red-600 hover:bg-red-700 px-4 py-2 rounded">
+                Confirm
+              </button>
+              <button
+                onClick={() => setConfirmAction(null)}
+                className="bg-gray-700 hover:bg-gray-800 px-4 py-2 rounded">
+                Cancel
               </button>
             </div>
           </div>
