@@ -34,7 +34,7 @@ const Profile = () => {
           });
         } else {
           const response = await fetch(
-            "https://thibkbit-backend.vercel.app/api/user/profile",
+            "https://thinkbit-backend.onrender.comapi/user/profile",
             {
               method: "GET",
               headers: {

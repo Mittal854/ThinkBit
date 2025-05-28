@@ -11,7 +11,7 @@
 //     const fetchExamHistory = async () => {
 //       try {
 //         const response = await axios.get(
-//           "https://thibkbit-backend.vercel.app/api/exam/my-history",
+//           "https://thinkbit-backend.onrender.comapi/exam/my-history",
 //           {
 //             headers: {
 //               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -139,7 +139,7 @@
 //     const fetchExamHistory = async () => {
 //       try {
 //         const response = await axios.get(
-//           "https://thibkbit-backend.vercel.app/api/exam/my-history",
+//           "https://thinkbit-backend.onrender.comapi/exam/my-history",
 //           {
 //             headers: {
 //               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -309,7 +309,7 @@ const ExamHistory = () => {
     const fetchExamHistory = async () => {
       try {
         const response = await axios.get(
-          "https://thibkbit-backend.vercel.app/api/exam/my-history",
+          "https://thinkbit-backend.onrender.comapi/exam/my-history",
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,

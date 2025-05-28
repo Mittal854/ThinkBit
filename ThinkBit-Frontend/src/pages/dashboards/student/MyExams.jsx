@@ -390,7 +390,7 @@
 //       try {
 //         const token = localStorage.getItem("token"); // ✅ Get user token
 //         const response = await fetch(
-//           "https://thibkbit-backend.vercel.app/api/exam/my-exams",
+//           "https://thinkbit-backend.onrender.comapi/exam/my-exams",
 //           {
 //             headers: { Authorization: `Bearer ${token}` },
 //           }
@@ -507,7 +507,7 @@
 //       }
 
 //       const response = await fetch(
-//         "https://thibkbit-backend.vercel.app/api/exam/my-exams", // ✅ This now returns enrolled exams only
+//         "https://thinkbit-backend.onrender.comapi/exam/my-exams", // ✅ This now returns enrolled exams only
 //         {
 //           headers: { Authorization: `Bearer ${token}` },
 //         }
@@ -633,7 +633,7 @@
 //         }
 
 //         const response = await fetch(
-//           "https://thibkbit-backend.vercel.app/api/exam/my-exams",
+//           "https://thinkbit-backend.onrender.comapi/exam/my-exams",
 //           {
 //             headers: { Authorization: `Bearer ${token}` },
 //           }
@@ -677,7 +677,7 @@
 //         return;
 //       }
 
-//       const response = await fetch("https://thibkbit-backend.vercel.app/api/exam/start", {
+//       const response = await fetch("https://thinkbit-backend.onrender.comapi/exam/start", {
 //         method: "POST",
 //         headers: {
 //           "Content-Type": "application/json",
@@ -829,7 +829,7 @@ const MyExams = () => {
         }
 
         const response = await fetch(
-          "https://thibkbit-backend.vercel.app/api/exam/my-exams",
+          "https://thinkbit-backend.onrender.comapi/exam/my-exams",
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -871,7 +871,7 @@ const MyExams = () => {
       }
 
       const response = await fetch(
-        "https://thibkbit-backend.vercel.app/api/exam/start",
+        "https://thinkbit-backend.onrender.comapi/exam/start",
         {
           method: "POST",
           headers: {

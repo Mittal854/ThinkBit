@@ -44,7 +44,7 @@ const ExamAnalytics = () => {
       setExaminerId(id);
       try {
         const response = await fetch(
-          `https://thibkbit-backend.vercel.app/api/exam/analytics/${id}`
+          `https://thinkbit-backend.onrender.comapi/exam/analytics/${id}`
         );
 
         if (!response.ok) {

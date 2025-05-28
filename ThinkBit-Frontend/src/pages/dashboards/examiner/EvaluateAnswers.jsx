@@ -22,7 +22,7 @@
 //     const fetchPendingSubmissions = async () => {
 //       try {
 //         const response = await axios.get(
-//           "https://thibkbit-backend.vercel.app/api/evaluations/pending",
+//           "https://thinkbit-backend.onrender.comapi/evaluations/pending",
 //           {
 //             headers: { Authorization: `Bearer ${token}` },
 //           }
@@ -78,7 +78,7 @@
 //       setSubmittingIndex(index);
 //       const submission = submissions[index];
 //       await axios.post(
-//         "https://thibkbit-backend.vercel.app/api/evaluations/submit",
+//         "https://thinkbit-backend.onrender.comapi/evaluations/submit",
 //         {
 //           attemptId: submission.attemptId,
 //           questionId: submission.question._id,
@@ -314,7 +314,7 @@ const EvaluateAnswers = () => {
     const fetchPendingSubmissions = async () => {
       try {
         const response = await axios.get(
-          "https://thibkbit-backend.vercel.app/api/evaluations/pending",
+          "https://thinkbit-backend.onrender.comapi/evaluations/pending",
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -370,7 +370,7 @@ const EvaluateAnswers = () => {
       setSubmittingIndex(index);
       const submission = submissions[index];
       await axios.post(
-        "https://thibkbit-backend.vercel.app/api/evaluations/submit",
+        "https://thinkbit-backend.onrender.comapi/evaluations/submit",
         {
           attemptId: submission.attemptId,
           questionId: submission.question._id,
