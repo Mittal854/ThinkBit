@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { FaEdit, FaTrash, FaUserShield, FaSearch } from "react-icons/fa";
@@ -14,7 +13,9 @@ const UserManagement = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await axios.get("http://localhost:5000/api/user");
+        const res = await axios.get(
+          "https://thinkbit-backend.onrender.com/api/user"
+        );
         setUsers(res.data);
       } catch (error) {
         console.error("Error fetching users:", error);
@@ -28,7 +29,9 @@ const UserManagement = () => {
       message: "Are you sure you want to delete this user?",
       onConfirm: async () => {
         try {
-          await axios.delete(`http://localhost:5000/api/user/${id}`);
+          await axios.delete(
+            `https://thinkbit-backend.onrender.com/api/user/${id}`
+          );
           setUsers(users.filter((user) => user._id !== id));
           setConfirmAction(null);
         } catch (error) {
@@ -44,7 +47,7 @@ const UserManagement = () => {
       onConfirm: async () => {
         try {
           const res = await axios.patch(
-            `http://localhost:5000/api/user/${id}/toggle-role`
+            `https://thinkbit-backend.onrender.com/api/user/${id}/toggle-role`
           );
           setUsers(users.map((user) => (user._id === id ? res.data : user)));
           setConfirmAction(null);
@@ -61,7 +64,7 @@ const UserManagement = () => {
       onConfirm: async () => {
         try {
           const res = await axios.put(
-            `http://localhost:5000/api/user/${editUser._id}`,
+            `https://thinkbit-backend.onrender.com/api/user/${editUser._id}`,
             editUser
           );
           setUsers(

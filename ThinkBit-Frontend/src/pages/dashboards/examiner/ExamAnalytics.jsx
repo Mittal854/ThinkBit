@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { jwtDecode } from "jwt-decode";
 import {
@@ -45,7 +44,7 @@ const ExamAnalytics = () => {
       setExaminerId(id);
       try {
         const response = await fetch(
-          `http://localhost:5000/api/exam/analytics/${id}`
+          `https://thinkbit-backend.onrender.com/api/exam/analytics/${id}`
         );
 
         if (!response.ok) {
@@ -59,8 +58,8 @@ const ExamAnalytics = () => {
           // Convert string values to numbers where needed
           const processedExamData = data.examData.map((exam) => ({
             ...exam,
-            avgScore: parseFloat(exam.avgScore ),
-            passRate: parseFloat(exam.passRate ),
+            avgScore: parseFloat(exam.avgScore),
+            passRate: parseFloat(exam.passRate),
             totalAttempts: parseInt(exam.totalAttempts),
           }));
           console.log("Processed Exam Data:", processedExamData);

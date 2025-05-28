@@ -11,7 +11,7 @@
 //     const fetchExamHistory = async () => {
 //       try {
 //         const response = await axios.get(
-//           "http://localhost:5000/api/exam/my-history",
+//           "https://thinkbit-backend.onrender.com/api/exam/my-history",
 //           {
 //             headers: {
 //               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -139,7 +139,7 @@
 //     const fetchExamHistory = async () => {
 //       try {
 //         const response = await axios.get(
-//           "http://localhost:5000/api/exam/my-history",
+//           "https://thinkbit-backend.onrender.com/api/exam/my-history",
 //           {
 //             headers: {
 //               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -309,7 +309,7 @@ const ExamHistory = () => {
     const fetchExamHistory = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/exam/my-history",
+          "https://thinkbit-backend.onrender.com/api/exam/my-history",
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -421,7 +421,7 @@ const ExamHistory = () => {
     // Save PDF
     doc.save(`${exam.name}-Certificate.pdf`);
   };
- 
+
   if (loading) {
     return (
       <div className="p-6 text-white text-center">

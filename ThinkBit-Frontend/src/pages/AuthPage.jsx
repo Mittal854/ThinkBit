@@ -25,7 +25,7 @@ const AuthPage = () => {
   const handleLogin = async () => {
     try {
       const response = await axios.post(
-        "http://localhost:5000/api/auth/login",
+        "https://thinkbit-backend.onrender.com/api/auth/login",
         {
           email: formData.email,
           password: formData.password,
@@ -56,10 +56,10 @@ const AuthPage = () => {
           toast.error("Invalid role assigned. Please contact support.");
         }
       }, 1500);
-      setTimeout(()=>{
+      setTimeout(() => {
         window.location.reload();
-      },1510);
-    } catch (error) { 
+      }, 1510);
+    } catch (error) {
       const errorMessage =
         error.response?.data?.message || "Login failed. Please try again.";
 
@@ -68,7 +68,6 @@ const AuthPage = () => {
       });
     }
   };
-
 
   // Handle Registration
   const handleRegister = async () => {
@@ -79,7 +78,10 @@ const AuthPage = () => {
         });
         return;
       }
-      await axios.post("http://localhost:5000/api/auth/register", formData);
+      await axios.post(
+        "https://thinkbit-backend.onrender.com/api/auth/register",
+        formData
+      );
       toast.success("Registration successful! You can now log in.", {
         position: "top-center",
       });

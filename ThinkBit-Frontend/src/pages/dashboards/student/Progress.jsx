@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
@@ -23,7 +22,7 @@ const Progress = () => {
     const fetchExamData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/exam/my-history",
+          "https://thinkbit-backend.onrender.com/api/exam/my-history",
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,

@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { FaPlus, FaSave } from "react-icons/fa";
 import axios from "axios";
@@ -121,14 +120,18 @@ const CreateExam = () => {
 
     try {
       const token = localStorage.getItem("token");
-       await new Promise((resolve) => setTimeout(resolve, 2000));
-      await axios.post("http://localhost:5000/api/exam/create", examData, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+      await axios.post(
+        "https://thinkbit-backend.onrender.com/api/exam/create",
+        examData,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
 
       setTimeout(() => {
         toast.success(" Exam created successfully!");
-      }, 1000); 
+      }, 1000);
       setTitle("");
       setDuration("");
       setTimeAllotted("");

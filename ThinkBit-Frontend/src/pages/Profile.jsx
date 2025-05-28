@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
@@ -22,12 +21,9 @@ const Profile = () => {
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
   const [user, setUser] = useState(null);
 
-
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        
-
         // If no user data received, manually set admin details
         if (localStorage.getItem("role") === "admin") {
           setUser({
@@ -38,7 +34,7 @@ const Profile = () => {
           });
         } else {
           const response = await fetch(
-            "http://localhost:5000/api/user/profile",
+            "https://thinkbit-backend.onrender.com/api/user/profile",
             {
               method: "GET",
               headers: {
@@ -67,7 +63,6 @@ const Profile = () => {
     localStorage.removeItem("username");
     navigate("/auth");
     window.location.reload();
-    
   };
 
   if (!user) return <p className="text-white text-center mt-10">Loading...</p>;

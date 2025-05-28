@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from "react";
 import { FaEdit, FaTrash, FaPlus, FaTimes } from "react-icons/fa";
 import axios from "axios";
@@ -18,7 +17,7 @@ const ManageQuestions = () => {
     marks: 1,
   });
 
-  const API_URL = "http://localhost:5000";
+  const API_URL = "https://thinkbit-backend.onrender.com";
 
   useEffect(() => {
     const token = localStorage.getItem("token");

@@ -38,71 +38,71 @@ const ExamPage = () => {
   const multiplePersonAlertTimeoutRef = useRef(null);
   const [modelsLoaded, setModelsLoaded] = useState(false);
   const stopAllMediaTracking = () => {
-  console.log("Stopping all media tracking...");
+    console.log("Stopping all media tracking...");
 
-  // Create a Set to track all unique tracks that need to be stopped
-  const tracksToStop = new Set();
+    // Create a Set to track all unique tracks that need to be stopped
+    const tracksToStop = new Set();
 
-  // Collect video tracks
-  if (videoRef.current && videoRef.current.srcObject) {
-    const videoTracks = videoRef.current.srcObject.getTracks();
-    videoTracks.forEach((track) => tracksToStop.add(track));
-  }
+    // Collect video tracks
+    if (videoRef.current && videoRef.current.srcObject) {
+      const videoTracks = videoRef.current.srcObject.getTracks();
+      videoTracks.forEach((track) => tracksToStop.add(track));
+    }
 
-  // Collect microphone tracks (which might be the same as video tracks in some cases)
-  if (micStreamRef.current) {
-    const audioTracks = micStreamRef.current.getTracks();
-    audioTracks.forEach((track) => tracksToStop.add(track));
-  }
+    // Collect microphone tracks (which might be the same as video tracks in some cases)
+    if (micStreamRef.current) {
+      const audioTracks = micStreamRef.current.getTracks();
+      audioTracks.forEach((track) => tracksToStop.add(track));
+    }
 
-  // Stop all collected tracks
-  tracksToStop.forEach((track) => {
-    console.log(`Stopping track: ${track.kind} (${track.id})`);
-    track.stop();
-  });
+    // Stop all collected tracks
+    tracksToStop.forEach((track) => {
+      console.log(`Stopping track: ${track.kind} (${track.id})`);
+      track.stop();
+    });
 
-  // Only after stopping all tracks, clear the references
-  if (videoRef.current) {
-    videoRef.current.srcObject = null;
-  }
-  micStreamRef.current = null;
+    // Only after stopping all tracks, clear the references
+    if (videoRef.current) {
+      videoRef.current.srcObject = null;
+    }
+    micStreamRef.current = null;
 
-  // Clear all intervals and timeouts
-  if (faceMonitoringIntervalRef.current) {
-    console.log("Clearing face monitoring interval");
-    clearInterval(faceMonitoringIntervalRef.current);
-    faceMonitoringIntervalRef.current = null;
-  }
+    // Clear all intervals and timeouts
+    if (faceMonitoringIntervalRef.current) {
+      console.log("Clearing face monitoring interval");
+      clearInterval(faceMonitoringIntervalRef.current);
+      faceMonitoringIntervalRef.current = null;
+    }
 
-  // Cancel audio monitoring animation frame
-  if (audioMonitoringRequestRef.current) {
-    console.log("Cancelling audio monitoring request");
-    cancelAnimationFrame(audioMonitoringRequestRef.current);
-    audioMonitoringRequestRef.current = null;
-  }
+    // Cancel audio monitoring animation frame
+    if (audioMonitoringRequestRef.current) {
+      console.log("Cancelling audio monitoring request");
+      cancelAnimationFrame(audioMonitoringRequestRef.current);
+      audioMonitoringRequestRef.current = null;
+    }
 
-  // Close audio context
-  if (audioContextRef.current) {
-    console.log("Closing audio context");
-    audioContextRef.current
-      .close()
-      .catch((err) => console.error("Error closing audio context:", err));
-    audioContextRef.current = null;
-  }
+    // Close audio context
+    if (audioContextRef.current) {
+      console.log("Closing audio context");
+      audioContextRef.current
+        .close()
+        .catch((err) => console.error("Error closing audio context:", err));
+      audioContextRef.current = null;
+    }
 
-  // Clear other timeouts
-  if (noiseAlertTimeoutRef.current) {
-    clearTimeout(noiseAlertTimeoutRef.current);
-    noiseAlertTimeoutRef.current = null;
-  }
+    // Clear other timeouts
+    if (noiseAlertTimeoutRef.current) {
+      clearTimeout(noiseAlertTimeoutRef.current);
+      noiseAlertTimeoutRef.current = null;
+    }
 
-  if (multiplePersonAlertTimeoutRef.current) {
-    clearTimeout(multiplePersonAlertTimeoutRef.current);
-    multiplePersonAlertTimeoutRef.current = null;
-  }
+    if (multiplePersonAlertTimeoutRef.current) {
+      clearTimeout(multiplePersonAlertTimeoutRef.current);
+      multiplePersonAlertTimeoutRef.current = null;
+    }
 
-  console.log("All media tracking stopped");
-};
+    console.log("All media tracking stopped");
+  };
   useEffect(() => {
     const loadModels = async () => {
       try {
@@ -445,7 +445,7 @@ const ExamPage = () => {
       try {
         const token = localStorage.getItem("token");
         const res = await fetch(
-          `http://localhost:5000/api/exam/attempt/${attemptId}`,
+          `https://thinkbit-backend.onrender.com/api/exam/attempt/${attemptId}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         if (!res.ok) {
@@ -599,14 +599,17 @@ const ExamPage = () => {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/exam/submit", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ attemptId, answers: selectedAnswers }),
-      });
+      const res = await fetch(
+        "https://thinkbit-backend.onrender.com/api/exam/submit",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ attemptId, answers: selectedAnswers }),
+        }
+      );
       if (!res.ok) {
         const errorData = await res.json();
         throw new Error(errorData.message || "Failed to submit.");

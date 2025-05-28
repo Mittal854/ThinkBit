@@ -163,7 +163,6 @@
 
 // export default MyExams;
 
-
 // import React from "react";
 // import { Link } from "react-router-dom";
 // import { FaCalendarAlt, FaClock, FaChartBar, FaRedo } from "react-icons/fa";
@@ -268,7 +267,6 @@
 // };
 
 // export default MyExams;
-
 
 // import React from "react";
 // import { Link } from "react-router-dom";
@@ -379,7 +377,6 @@
 
 // export default MyExams;
 
-
 // import React, { useEffect, useState } from "react";
 // import { Link } from "react-router-dom";
 // import { FaCalendarAlt, FaClock, FaChartBar, FaRedo } from "react-icons/fa";
@@ -393,7 +390,7 @@
 //       try {
 //         const token = localStorage.getItem("token"); // ✅ Get user token
 //         const response = await fetch(
-//           "http://localhost:5000/api/exam/my-exams",
+//           "https://thinkbit-backend.onrender.com/api/exam/my-exams",
 //           {
 //             headers: { Authorization: `Bearer ${token}` },
 //           }
@@ -490,7 +487,6 @@
 
 // export default MyExams;
 
-
 // import React, { useEffect, useState } from "react";
 // import { Link } from "react-router-dom";
 // import { FaCalendarAlt, FaClock, FaChartBar, FaRedo } from "react-icons/fa";
@@ -511,7 +507,7 @@
 //       }
 
 //       const response = await fetch(
-//         "http://localhost:5000/api/exam/my-exams", // ✅ This now returns enrolled exams only
+//         "https://thinkbit-backend.onrender.com/api/exam/my-exams", // ✅ This now returns enrolled exams only
 //         {
 //           headers: { Authorization: `Bearer ${token}` },
 //         }
@@ -637,7 +633,7 @@
 //         }
 
 //         const response = await fetch(
-//           "http://localhost:5000/api/exam/my-exams",
+//           "https://thinkbit-backend.onrender.com/api/exam/my-exams",
 //           {
 //             headers: { Authorization: `Bearer ${token}` },
 //           }
@@ -658,7 +654,6 @@
 //         setLoading(false);
 //       }
 //     };
-
 
 //     fetchExams();
 //   }, []);
@@ -682,7 +677,7 @@
 //         return;
 //       }
 
-//       const response = await fetch("http://localhost:5000/api/exam/start", {
+//       const response = await fetch("https://thinkbit-backend.onrender.com/api/exam/start", {
 //         method: "POST",
 //         headers: {
 //           "Content-Type": "application/json",
@@ -734,7 +729,6 @@
 //             const isOngoing =
 //               currentTime >= startTime && currentTime <= endTime;
 //             console.log(`Is Ongoing: ${isOngoing}`);
-
 
 //             return (
 //               <div
@@ -814,7 +808,6 @@
 
 // export default MyExams;
 
-
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaCalendarAlt, FaClock, FaChartBar, FaRedo } from "react-icons/fa";
@@ -835,9 +828,12 @@ const MyExams = () => {
           return;
         }
 
-        const response = await fetch("http://localhost:5000/api/exam/my-exams", {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const response = await fetch(
+          "https://thinkbit-backend.onrender.com/api/exam/my-exams",
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
 
         if (!response.ok) {
           throw new Error(`HTTP Error! Status: ${response.status}`);
@@ -874,14 +870,17 @@ const MyExams = () => {
         return;
       }
 
-      const response = await fetch("http://localhost:5000/api/exam/start", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ examId }),
-      });
+      const response = await fetch(
+        "https://thinkbit-backend.onrender.com/api/exam/start",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ examId }),
+        }
+      );
 
       const data = await response.json();
       if (!response.ok) {
@@ -904,14 +903,16 @@ const MyExams = () => {
       return exam.status === "Completed" ? "Completed" : "Ended";
     }
     if (currentTime >= startTime && currentTime <= endTime) {
-            return exam.status === "Completed" ? "Completed" : "Ongoing";
+      return exam.status === "Completed" ? "Completed" : "Ongoing";
     }
     return "Upcoming";
   };
 
   return (
     <div className="p-6 text-white">
-      <h2 className="text-4xl font-extrabold mb-6 text-gradient">📚 My Exams</h2>
+      <h2 className="text-4xl font-extrabold mb-6 text-gradient">
+        📚 My Exams
+      </h2>
 
       {loading ? (
         <p className="text-center text-gray-400">Loading exams...</p>
@@ -926,30 +927,39 @@ const MyExams = () => {
             return (
               <div
                 key={exam.id}
-                className="relative bg-gray-900 p-6 rounded-xl shadow-lg border border-gray-700 hover:scale-105 transition-all group overflow-hidden"
-              >
+                className="relative bg-gray-900 p-6 rounded-xl shadow-lg border border-gray-700 hover:scale-105 transition-all group overflow-hidden">
                 <h3 className="relative text-xl font-semibold">{exam.name}</h3>
                 <p className="relative text-sm text-gray-400 flex items-center gap-2 mt-2">
                   <FaCalendarAlt className="text-blue-400" /> {exam.date}
                 </p>
                 <p className="relative mt-2 flex items-center gap-2">
-                  <FaClock className="text-yellow-400" /> Duration: {exam.duration}
+                  <FaClock className="text-yellow-400" /> Duration:{" "}
+                  {exam.duration}
                 </p>
                 <p className="relative flex items-center gap-2">
-                  <FaChartBar className="text-green-400" /> Total Marks: {exam.totalMarks}
+                  <FaChartBar className="text-green-400" /> Total Marks:{" "}
+                  {exam.totalMarks}
                 </p>
                 <p className="relative font-semibold mt-2">
-                  Attempts Left: <span className={exam.attemptsLeft > 0 ? "text-green-400" : "text-red-400"}>{exam.attemptsLeft}</span>
+                  Attempts Left:{" "}
+                  <span
+                    className={
+                      exam.attemptsLeft > 0 ? "text-green-400" : "text-red-400"
+                    }>
+                    {exam.attemptsLeft}
+                  </span>
                 </p>
 
                 <div
                   className={`relative inline-block px-3 py-1 mt-3 text-sm font-semibold rounded-full ${
-                    status === "Ongoing" ? "bg-yellow-500 text-black" :
-                    status === "Completed" ? "bg-green-500 text-white" :
-                    status === "Ended" ? "bg-red-500 text-white" :
-                    "bg-blue-500 text-white"
-                  }`}
-                >
+                    status === "Ongoing"
+                      ? "bg-yellow-500 text-black"
+                      : status === "Completed"
+                      ? "bg-green-500 text-white"
+                      : status === "Ended"
+                      ? "bg-red-500 text-white"
+                      : "bg-blue-500 text-white"
+                  }`}>
                   {status}
                 </div>
 
@@ -957,8 +967,9 @@ const MyExams = () => {
                   {status === "Ongoing" && (
                     <button
                       className="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2 rounded-lg w-full font-semibold transition-all"
-                      onClick={() => startExam(exam.id, exam.startTime, exam.endTime)}
-                    >
+                      onClick={() =>
+                        startExam(exam.id, exam.startTime, exam.endTime)
+                      }>
                       Start Exam
                     </button>
                   )}

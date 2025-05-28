@@ -1,5 +1,3 @@
-
-
 // import React, { useState, useEffect, useRef } from "react";
 // import { FaCheckCircle, FaSpinner } from "react-icons/fa";
 // import axios from "axios";
@@ -24,7 +22,7 @@
 //     const fetchPendingSubmissions = async () => {
 //       try {
 //         const response = await axios.get(
-//           "http://localhost:5000/api/evaluations/pending",
+//           "https://thinkbit-backend.onrender.com/api/evaluations/pending",
 //           {
 //             headers: { Authorization: `Bearer ${token}` },
 //           }
@@ -80,7 +78,7 @@
 //       setSubmittingIndex(index);
 //       const submission = submissions[index];
 //       await axios.post(
-//         "http://localhost:5000/api/evaluations/submit",
+//         "https://thinkbit-backend.onrender.com/api/evaluations/submit",
 //         {
 //           attemptId: submission.attemptId,
 //           questionId: submission.question._id,
@@ -292,7 +290,6 @@
 
 // export default EvaluateAnswers;
 
-
 import React, { useState, useEffect, useRef } from "react";
 import { FaCheckCircle, FaSpinner } from "react-icons/fa";
 import axios from "axios";
@@ -317,7 +314,7 @@ const EvaluateAnswers = () => {
     const fetchPendingSubmissions = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/evaluations/pending",
+          "https://thinkbit-backend.onrender.com/api/evaluations/pending",
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -373,7 +370,7 @@ const EvaluateAnswers = () => {
       setSubmittingIndex(index);
       const submission = submissions[index];
       await axios.post(
-        "http://localhost:5000/api/evaluations/submit",
+        "https://thinkbit-backend.onrender.com/api/evaluations/submit",
         {
           attemptId: submission.attemptId,
           questionId: submission.question._id,
