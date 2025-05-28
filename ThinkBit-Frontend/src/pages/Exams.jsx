@@ -27,7 +27,7 @@ const Exams = () => {
     const fetchExams = async () => {
       try {
         const response = await fetch(
-          "https://thinkbit.onrender.comapi/exam/allexams"
+          "https://thinkbit.onrender.com/api/exam/allexams"
         );
         if (!response.ok) throw new Error("Failed to fetch exams");
         const data = await response.json();
@@ -85,7 +85,7 @@ const Exams = () => {
 
     try {
       const response = await fetch(
-        "https://thinkbit.onrender.comapi/exam/enroll",
+        "https://thinkbit.onrender.com/api/exam/enroll",
         {
           method: "POST",
           headers: {
@@ -100,7 +100,7 @@ const Exams = () => {
       toast.success(`You have successfully enrolled in ${exam.title}! ✅`);
 
       const updatedExamsResponse = await fetch(
-        "https://thinkbit.onrender.comapi/exam/allexams"
+        "https://thinkbit.onrender.com/api/exam/allexams"
       );
       const updatedExams = await updatedExamsResponse.json();
       setExams(updatedExams);

@@ -22,7 +22,7 @@
 //     const fetchPendingSubmissions = async () => {
 //       try {
 //         const response = await axios.get(
-//           "https://thinkbit.onrender.comapi/evaluations/pending",
+//           "https://thinkbit.onrender.com/api/evaluations/pending",
 //           {
 //             headers: { Authorization: `Bearer ${token}` },
 //           }
@@ -78,7 +78,7 @@
 //       setSubmittingIndex(index);
 //       const submission = submissions[index];
 //       await axios.post(
-//         "https://thinkbit.onrender.comapi/evaluations/submit",
+//         "https://thinkbit.onrender.com/api/evaluations/submit",
 //         {
 //           attemptId: submission.attemptId,
 //           questionId: submission.question._id,
@@ -314,7 +314,7 @@ const EvaluateAnswers = () => {
     const fetchPendingSubmissions = async () => {
       try {
         const response = await axios.get(
-          "https://thinkbit.onrender.comapi/evaluations/pending",
+          "https://thinkbit.onrender.com/api/evaluations/pending",
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -370,7 +370,7 @@ const EvaluateAnswers = () => {
       setSubmittingIndex(index);
       const submission = submissions[index];
       await axios.post(
-        "https://thinkbit.onrender.comapi/evaluations/submit",
+        "https://thinkbit.onrender.com/api/evaluations/submit",
         {
           attemptId: submission.attemptId,
           questionId: submission.question._id,

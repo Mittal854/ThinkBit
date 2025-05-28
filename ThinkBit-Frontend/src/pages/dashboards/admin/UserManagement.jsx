@@ -13,7 +13,7 @@ const UserManagement = () => {
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const res = await axios.get("https://thinkbit.onrender.comapi/user");
+        const res = await axios.get("https://thinkbit.onrender.com/api/user");
         setUsers(res.data);
       } catch (error) {
         console.error("Error fetching users:", error);
@@ -27,7 +27,7 @@ const UserManagement = () => {
       message: "Are you sure you want to delete this user?",
       onConfirm: async () => {
         try {
-          await axios.delete(`https://thinkbit.onrender.comapi/user/${id}`);
+          await axios.delete(`https://thinkbit.onrender.com/api/user/${id}`);
           setUsers(users.filter((user) => user._id !== id));
           setConfirmAction(null);
         } catch (error) {
@@ -43,7 +43,7 @@ const UserManagement = () => {
       onConfirm: async () => {
         try {
           const res = await axios.patch(
-            `https://thinkbit.onrender.comapi/user/${id}/toggle-role`
+            `https://thinkbit.onrender.com/api/user/${id}/toggle-role`
           );
           setUsers(users.map((user) => (user._id === id ? res.data : user)));
           setConfirmAction(null);
@@ -60,7 +60,7 @@ const UserManagement = () => {
       onConfirm: async () => {
         try {
           const res = await axios.put(
-            `https://thinkbit.onrender.comapi/user/${editUser._id}`,
+            `https://thinkbit.onrender.com/api/user/${editUser._id}`,
             editUser
           );
           setUsers(

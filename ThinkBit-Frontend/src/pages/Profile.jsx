@@ -34,7 +34,7 @@ const Profile = () => {
           });
         } else {
           const response = await fetch(
-            "https://thinkbit.onrender.comapi/user/profile",
+            "https://thinkbit.onrender.com/api/user/profile",
             {
               method: "GET",
               headers: {

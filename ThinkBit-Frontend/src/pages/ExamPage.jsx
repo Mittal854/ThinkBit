@@ -445,7 +445,7 @@ const ExamPage = () => {
       try {
         const token = localStorage.getItem("token");
         const res = await fetch(
-          `https://thinkbit.onrender.comapi/exam/attempt/${attemptId}`,
+          `https://thinkbit.onrender.com/api/exam/attempt/${attemptId}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         if (!res.ok) {
@@ -599,7 +599,7 @@ const ExamPage = () => {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("https://thinkbit.onrender.comapi/exam/submit", {
+      const res = await fetch("https://thinkbit.onrender.com/api/exam/submit", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
