@@ -61,6 +61,7 @@ const Profile = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("role");
     localStorage.removeItem("username");
+    localStorage.removeItem("userId");
     navigate("/auth");
     window.location.reload();
   };
