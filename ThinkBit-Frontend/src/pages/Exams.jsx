@@ -27,7 +27,7 @@ const Exams = () => {
     const fetchExams = async () => {
       try {
         const response = await fetch(
-          "https://thinkbit-backend.onrender.com/api/exam/allexams"
+          "https://thibkbit-backend.vercel.app//api/exam/allexams"
         );
         if (!response.ok) throw new Error("Failed to fetch exams");
         const data = await response.json();
@@ -85,7 +85,7 @@ const Exams = () => {
 
     try {
       const response = await fetch(
-        "https://thinkbit-backend.onrender.com/api/exam/enroll",
+        "https://thibkbit-backend.vercel.app//api/exam/enroll",
         {
           method: "POST",
           headers: {
@@ -100,7 +100,7 @@ const Exams = () => {
       toast.success(`You have successfully enrolled in ${exam.title}! ✅`);
 
       const updatedExamsResponse = await fetch(
-        "https://thinkbit-backend.onrender.com/api/exam/allexams"
+        "https://thibkbit-backend.vercel.app//api/exam/allexams"
       );
       const updatedExams = await updatedExamsResponse.json();
       setExams(updatedExams);

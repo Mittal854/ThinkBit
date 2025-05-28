@@ -122,7 +122,7 @@ const CreateExam = () => {
       const token = localStorage.getItem("token");
       await new Promise((resolve) => setTimeout(resolve, 2000));
       await axios.post(
-        "https://thinkbit-backend.onrender.com/api/exam/create",
+        "https://thibkbit-backend.vercel.app//api/exam/create",
         examData,
         {
           headers: { Authorization: `Bearer ${token}` },

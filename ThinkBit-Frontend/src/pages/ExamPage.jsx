@@ -445,7 +445,7 @@ const ExamPage = () => {
       try {
         const token = localStorage.getItem("token");
         const res = await fetch(
-          `https://thinkbit-backend.onrender.com/api/exam/attempt/${attemptId}`,
+          `https://thibkbit-backend.vercel.app//api/exam/attempt/${attemptId}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         if (!res.ok) {
@@ -600,7 +600,7 @@ const ExamPage = () => {
     try {
       const token = localStorage.getItem("token");
       const res = await fetch(
-        "https://thinkbit-backend.onrender.com/api/exam/submit",
+        "https://thibkbit-backend.vercel.app//api/exam/submit",
         {
           method: "POST",
           headers: {

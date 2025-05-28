@@ -25,7 +25,7 @@ const AuthPage = () => {
   const handleLogin = async () => {
     try {
       const response = await axios.post(
-        "https://thinkbit-backend.onrender.com/api/auth/login",
+        "https://thibkbit-backend.vercel.app//api/auth/login",
         {
           email: formData.email,
           password: formData.password,
@@ -79,7 +79,7 @@ const AuthPage = () => {
         return;
       }
       await axios.post(
-        "https://thinkbit-backend.onrender.com/api/auth/register",
+        "https://thibkbit-backend.vercel.app/api/auth/register",
         formData
       );
       toast.success("Registration successful! You can now log in.", {
