@@ -10,13 +10,13 @@ connectDB();
 
 // Middleware
 app.use(express.json());
-// app.use(cors());
-app.use(
-  cors({
-    origin: "https://think-bit.vercel.app",
-    credentials: true,
-  })
-);
+app.use(cors());
+// app.use(
+//   cors({
+//     origin: "https://think-bit.vercel.app",
+//     credentials: true,
+//   })
+// );
 // Routes
 app.use("/api/auth", require("./src/routes/authRoutes"));
 app.use("/api/user", require("./src/routes/userRoutes"));
