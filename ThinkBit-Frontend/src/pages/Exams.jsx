@@ -26,9 +26,7 @@ const Exams = () => {
   useEffect(() => {
     const fetchExams = async () => {
       try {
-        const response = await fetch(
-          "https://thinkbit.onrender.com/api/exam/allexams"
-        );
+        const response = await fetch("http://localhost:5000/api/exam/allexams");
         if (!response.ok) throw new Error("Failed to fetch exams");
         const data = await response.json();
         setExams(data);
@@ -84,23 +82,20 @@ const Exams = () => {
     }
 
     try {
-      const response = await fetch(
-        "https://thinkbit.onrender.com/api/exam/enroll",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-          body: JSON.stringify({ examId: exam._id }),
-        }
-      );
+      const response = await fetch("http://localhost:5000/api/exam/enroll", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        body: JSON.stringify({ examId: exam._id }),
+      });
 
       if (!response.ok) throw new Error("Enrollment failed!");
       toast.success(`You have successfully enrolled in ${exam.title}! ✅`);
 
       const updatedExamsResponse = await fetch(
-        "https://thinkbit.onrender.com/api/exam/allexams"
+        "http://localhost:5000/api/exam/allexams"
       );
       const updatedExams = await updatedExamsResponse.json();
       setExams(updatedExams);

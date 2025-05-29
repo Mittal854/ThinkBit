@@ -44,7 +44,7 @@ const ExamAnalytics = () => {
       setExaminerId(id);
       try {
         const response = await fetch(
-          `https://thinkbit.onrender.com/api/exam/analytics/${id}`
+          `http://localhost:5000/api/exam/analytics/${id}`
         );
 
         if (!response.ok) {

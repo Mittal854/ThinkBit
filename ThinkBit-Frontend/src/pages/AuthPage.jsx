@@ -25,7 +25,7 @@ const AuthPage = () => {
   const handleLogin = async () => {
     try {
       const response = await axios.post(
-        "https://thinkbit.onrender.com/api/auth/login",
+        "http://localhost:5000/api/auth/login",
         {
           email: formData.email,
           password: formData.password,
@@ -78,10 +78,7 @@ const AuthPage = () => {
         });
         return;
       }
-      await axios.post(
-        "https://thinkbit.onrender.com/api/auth/register",
-        formData
-      );
+      await axios.post("http://localhost:5000/api/auth/register", formData);
       toast.success("Registration successful! You can now log in.", {
         position: "top-center",
       });

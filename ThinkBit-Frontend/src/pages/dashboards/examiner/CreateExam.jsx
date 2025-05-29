@@ -121,13 +121,9 @@ const CreateExam = () => {
     try {
       const token = localStorage.getItem("token");
       await new Promise((resolve) => setTimeout(resolve, 2000));
-      await axios.post(
-        "https://thinkbit.onrender.com/api/exam/create",
-        examData,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      await axios.post("http://localhost:5000/api/exam/create", examData, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
 
       setTimeout(() => {
         toast.success(" Exam created successfully!");

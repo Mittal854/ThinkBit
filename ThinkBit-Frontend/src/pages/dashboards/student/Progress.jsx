@@ -22,7 +22,7 @@ const Progress = () => {
     const fetchExamData = async () => {
       try {
         const response = await axios.get(
-          "https://thinkbit.onrender.com/api/exam/my-history",
+          "http://localhost:5000/api/exam/my-history",
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
