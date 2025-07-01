@@ -22,7 +22,7 @@ const Progress = () => {
     const fetchExamData = async () => {
       try {
         const response = await axios.get(
-          "http://localhost:5000/api/exam/my-history",
+          "https://thinkbitbackend.netlify.app/api/exam/my-history",
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,

@@ -44,7 +44,7 @@ const ExamAnalytics = () => {
       setExaminerId(id);
       try {
         const response = await fetch(
-          `http://localhost:5000/api/exam/analytics/${id}`
+          `https://thinkbitbackend.netlify.app/api/exam/analytics/${id}`
         );
 
         if (!response.ok) {

@@ -445,7 +445,7 @@ const ExamPage = () => {
       try {
         const token = localStorage.getItem("token");
         const res = await fetch(
-          `http://localhost:5000/api/exam/attempt/${attemptId}`,
+          `https://thinkbitbackend.netlify.app/api/exam/attempt/${attemptId}`,
           { headers: { Authorization: `Bearer ${token}` } }
         );
         if (!res.ok) {
@@ -599,14 +599,17 @@ const ExamPage = () => {
 
     try {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/api/exam/submit", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ attemptId, answers: selectedAnswers }),
-      });
+      const res = await fetch(
+        "https://thinkbitbackend.netlify.app/api/exam/submit",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ attemptId, answers: selectedAnswers }),
+        }
+      );
       if (!res.ok) {
         const errorData = await res.json();
         throw new Error(errorData.message || "Failed to submit.");

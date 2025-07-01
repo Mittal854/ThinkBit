@@ -34,7 +34,7 @@ const Profile = () => {
           });
         } else {
           const response = await fetch(
-            "http://localhost:5000/api/user/profile",
+            "https://thinkbitbackend.netlify.app/api/user/profile",
             {
               method: "GET",
               headers: {

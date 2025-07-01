@@ -390,7 +390,7 @@
 //       try {
 //         const token = localStorage.getItem("token"); // ✅ Get user token
 //         const response = await fetch(
-//           "http://localhost:5000/api/exam/my-exams",
+//           "https://thinkbitbackend.netlify.app/api/exam/my-exams",
 //           {
 //             headers: { Authorization: `Bearer ${token}` },
 //           }
@@ -507,7 +507,7 @@
 //       }
 
 //       const response = await fetch(
-//         "http://localhost:5000/api/exam/my-exams", // ✅ This now returns enrolled exams only
+//         "https://thinkbitbackend.netlify.app/api/exam/my-exams", // ✅ This now returns enrolled exams only
 //         {
 //           headers: { Authorization: `Bearer ${token}` },
 //         }
@@ -633,7 +633,7 @@
 //         }
 
 //         const response = await fetch(
-//           "http://localhost:5000/api/exam/my-exams",
+//           "https://thinkbitbackend.netlify.app/api/exam/my-exams",
 //           {
 //             headers: { Authorization: `Bearer ${token}` },
 //           }
@@ -677,7 +677,7 @@
 //         return;
 //       }
 
-//       const response = await fetch("http://localhost:5000/api/exam/start", {
+//       const response = await fetch("https://thinkbitbackend.netlify.app/api/exam/start", {
 //         method: "POST",
 //         headers: {
 //           "Content-Type": "application/json",
@@ -829,7 +829,7 @@ const MyExams = () => {
         }
 
         const response = await fetch(
-          "http://localhost:5000/api/exam/my-exams",
+          "https://thinkbitbackend.netlify.app/api/exam/my-exams",
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -870,14 +870,17 @@ const MyExams = () => {
         return;
       }
 
-      const response = await fetch("http://localhost:5000/api/exam/start", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({ examId }),
-      });
+      const response = await fetch(
+        "https://thinkbitbackend.netlify.app/api/exam/start",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify({ examId }),
+        }
+      );
 
       const data = await response.json();
       if (!response.ok) {
